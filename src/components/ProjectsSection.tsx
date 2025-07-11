@@ -2,32 +2,13 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import TiltedCard from './TiltedCard';
+import projects from '../data/projects';
 
 const ProjectsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-
-  const projects = [
-    {
-      title: 'AI-Powered Analytics Platform',
-      description: 'A comprehensive machine learning platform that processes real-time data and provides intelligent insights for business decision-making.',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=300&fit=crop',
-      technologies: ['Python', 'TensorFlow', 'React', 'AWS']
-    },
-    {
-      title: 'Quantum Computing Simulator',
-      description: 'A web-based quantum computing simulator that allows users to experiment with quantum algorithms and visualize quantum states.',
-      image: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=500&h=300&fit=crop',
-      technologies: ['JavaScript', 'Three.js', 'WebGL', 'Node.js']
-    },
-    {
-      title: 'Space Mission Control Dashboard',
-      description: 'A real-time mission control dashboard for tracking spacecraft telemetry, orbital mechanics, and mission-critical systems.',
-      image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&h=300&fit=crop',
-      technologies: ['React', 'TypeScript', 'WebSockets', 'D3.js']
-    }
-  ];
 
   const headingVariants = {
     hidden: { 
@@ -45,62 +26,63 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section id="projects" data-section="projects" className="min-h-screen flex items-center justify-center px-6 py-20">
-      <div className="container mx-auto" ref={ref}>
-        <motion.h2
-          variants={headingVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient"
-        >
-          Projects
-        </motion.h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ 
-                opacity: 0, 
-                y: 50,
-                scale: 0.95
-              }}
-              animate={isInView ? { 
-                opacity: 1, 
-                y: 0,
-                scale: 1
-              } : {}}
-              transition={{ 
-                duration: 0.6, 
-                delay: 0.3 + index * 0.1,
-                ease: "easeOut"
-              }}
-              className="h-96"
-            >
+    <div className="container mx-auto" ref={ref}>
+      <motion.h2
+        variants={headingVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient"
+      >
+        Projects
+      </motion.h2>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+        {projects.map((project, index) => (
+          <motion.div
+            key={project.id}
+            initial={{ 
+              opacity: 0, 
+              y: 50,
+              scale: 0.95
+            }}
+            animate={isInView ? { 
+              opacity: 1, 
+              y: 0,
+              scale: 1
+            } : {}}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.3 + index * 0.1,
+              ease: "easeOut"
+            }}
+            className="w-full h-80 md:h-[420px] xl:h-[480px]"
+          >
+            <Link to={`/projects/${project.id}`} className="block h-full">
               <TiltedCard
-                imageSrc={project.image}
+                imageSrc={project.screenshots?.[0] || ''}
                 altText={project.title}
-                containerHeight="400px"
+                containerHeight="100%"
                 containerWidth="100%"
-                imageHeight="400px"
+                imageHeight="100%"
                 imageWidth="100%"
                 scaleOnHover={1.05}
                 rotateAmplitude={12}
+                loading="lazy"
               >
-                <div className="rounded-2xl p-6 h-full flex flex-col justify-end bg-gradient-to-t from-black/60 via-black/30 to-transparent">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-space-pink transition-colors duration-300">
+                <div className="rounded-2xl p-4 md:p-6 h-full flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3 group-hover:text-space-pink transition-colors duration-300 drop-shadow-lg">
                     {project.title}
                   </h3>
                   
-                  <p className="text-gray-200 mb-4 leading-relaxed text-sm">
-                    {project.description}
+                  <p className="text-white mb-2 md:mb-4 leading-relaxed text-xs md:text-sm font-medium drop-shadow-lg">
+                    {project.cardDescription}
                   </p>
                   
                   <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, techIndex) => (
+                    {project.techStack.map((tech, techIndex) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 bg-white/20 text-white text-xs rounded-full border border-white/30 backdrop-blur-sm hover:bg-white/30 transition-all duration-200"
+                        className="px-2 md:px-3 py-1 bg-black/40 text-white text-xs rounded-full border border-white/50 backdrop-blur-sm hover:bg-black/60 transition-all duration-200 font-medium"
                       >
                         {tech}
                       </span>
@@ -108,11 +90,11 @@ const ProjectsSection = () => {
                   </div>
                 </div>
               </TiltedCard>
-            </motion.div>
-          ))}
-        </div>
+            </Link>
+          </motion.div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 };
 

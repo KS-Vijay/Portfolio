@@ -1,19 +1,32 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import React from 'react';
 
-const Navigation = () => {
+interface NavigationProps {
+  navAnimation?: {
+    duration?: number;
+    delay?: number;
+  };
+}
+
+const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'hero', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'experience', label: 'Experience' },
+    { id: 'experience', label: 'Education' },
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
     { id: 'contact', label: 'Get In Touch', special: true },
   ];
+
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,19 +70,15 @@ const Navigation = () => {
 
   const scrollToSection = (sectionId: string) => {
     console.log('Navigation: Attempting to scroll to section:', sectionId);
-    
-    const element = document.getElementById(sectionId);
-    
+    // Find the actual <section> element with the id
+    const element = document.querySelector(`section[id="${sectionId}"]`);
     if (element) {
       const navbarHeight = 80;
-      const elementTop = element.offsetTop - navbarHeight;
-      
+      const elementTop = (element as HTMLElement).offsetTop - navbarHeight;
       window.scrollTo({ 
         top: elementTop, 
         behavior: 'smooth' 
       });
-      
-      // Update active section immediately for visual feedback
       setActiveSection(sectionId);
     } else {
       console.error('Element not found for section:', sectionId);
@@ -83,39 +92,57 @@ const Navigation = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 1.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ease-out p-6 ${
+      initial={navAnimation?.duration === 0 ? false : { y: -40, opacity: 0 }}
+      animate={navAnimation?.duration === 0 ? false : { y: 0, opacity: 1 }}
+      transition={navAnimation?.duration === 0 ? {} : {
+        duration: navAnimation?.duration ?? 0.25,
+        delay: navAnimation?.delay ?? 0,
+      }}
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out p-4 sm:p-6 ${
         isScrolled ? 'bg-space-dark/70 backdrop-blur-lg' : 'bg-transparent'
       }`}
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo on the left */}
         <motion.div 
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.4 }}
+          initial={navAnimation?.duration === 0 ? false : { scale: 0, opacity: 0 }}
+          animate={navAnimation?.duration === 0 ? false : { scale: 1, opacity: 1 }}
+          transition={navAnimation?.duration === 0 ? {} : { duration: 0.6, delay: 1.4 }}
           className="px-4 py-2 cursor-pointer"
-          onClick={() => handleNavItemClick('hero')}
+          onClick={() => {
+            if (location.pathname === '/') {
+              handleNavItemClick('hero');
+            }
+          }}
         >
           <span className="text-2xl font-black text-white">VJ</span>
         </motion.div>
 
-        {/* Navigation items on the right */}
-        <motion.div 
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.6 }}
-          className="px-8 py-4"
-        >
-          <nav>
-            <ul className="flex gap-8 list-none">
+        {/* Hamburger menu for mobile */}
+        <div className="relative sm:hidden z-50">
+          <button
+            className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-space-violet relative z-50"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label={sidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+          >
+            {sidebarOpen ? (
+              <X className="w-7 h-7 text-white transition-transform duration-300" />
+            ) : (
+              <Menu className="w-7 h-7 text-white transition-transform duration-300" />
+            )}
+          </button>
+          {/* Dropdown menu for mobile */}
+          {sidebarOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-space-dark rounded-lg shadow-lg py-4 z-50 flex flex-col gap-2">
               {navItems.map((item) => (
-                <li key={item.id}>
+                location.pathname === '/' ? (
                   <button
-                    onClick={() => handleNavItemClick(item.id)}
-                    className={`px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                    key={item.id}
+                    onClick={() => {
+                      handleNavItemClick(item.id);
+                      setSidebarOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSection === item.id
                         ? item.special
                           ? 'bg-space-violet text-white border border-space-violet'
@@ -127,6 +154,65 @@ const Navigation = () => {
                   >
                     {item.label}
                   </button>
+                ) : (
+                  <Link
+                    key={item.id}
+                    to={{ pathname: '/', hash: '#' + item.id }}
+                    replace
+                    onClick={() => setSidebarOpen(false)}
+                    className={`w-full text-left px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                      item.special
+                        ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
+                        : 'text-white hover:text-space-violet hover:bg-white/10'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Navigation items on the right (hidden on mobile) */}
+        <motion.div 
+          initial={navAnimation?.duration === 0 ? false : { scale: 0, opacity: 0 }}
+          animate={navAnimation?.duration === 0 ? false : { scale: 1, opacity: 1 }}
+          transition={navAnimation?.duration === 0 ? {} : { duration: 0.6, delay: 1.6 }}
+          className="px-8 py-4 hidden sm:block"
+        >
+          <nav>
+            <ul className="flex gap-8 list-none">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  {location.pathname === '/' ? (
+                    <button
+                      onClick={() => handleNavItemClick(item.id)}
+                      className={`px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                        activeSection === item.id
+                          ? item.special
+                            ? 'bg-space-violet text-white border border-space-violet'
+                            : 'bg-space-violet/20 text-space-violet border border-space-violet/30'
+                          : item.special
+                          ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
+                          : 'text-white hover:text-space-violet hover:bg-white/10'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ) : (
+                    <Link
+                      to={{ pathname: '/', hash: '#' + item.id }}
+                      replace
+                      className={`px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                        item.special
+                          ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
+                          : 'text-white hover:text-space-violet hover:bg-white/10'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -135,6 +221,6 @@ const Navigation = () => {
       </div>
     </motion.nav>
   );
-};
+});
 
 export default Navigation;

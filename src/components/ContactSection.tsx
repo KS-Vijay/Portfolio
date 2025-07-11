@@ -10,6 +10,35 @@ import Earth from './Earth';
 import emailjs from 'emailjs-com';
 import { toast } from '@/hooks/use-toast';
 
+// List of common disposable email domains
+const disposableDomains = [
+  'mailinator.com', 'guerrillamail.com', '10minutemail.com', 'tempmail.com',
+  'yopmail.com', 'trashmail.com', 'getnada.com', 'dispostable.com',
+  'fakeinbox.com', 'mintemail.com', 'maildrop.cc', 'mytemp.email',
+  'throwawaymail.com', 'sharklasers.com', 'spamgourmet.com',
+  'mailnesia.com', 'emailondeck.com', 'moakt.com', 'mailcatch.com',
+  'inboxkitten.com', 'tmail.ws', 'tempail.com', 'luxusmail.org',
+  'temp-mail.org', 'temp-mail.io', 'temp-mail.com', 'temp-mail.net',
+  'temp-mail.xyz', 'temp-mail.info', 'temp-mail.biz', 'temp-mail.top',
+  'tempmail.net', 'tempmail.org', 'tempmail.xyz', 'tempmail.email',
+  'tempmail.lol', 'tempmail.plus', 'tempmail.site', 'tempmail.space',
+  'tempmail.us', 'tempmail.work', 'tempmailbox.com', 'tempmails.net',
+  'tempr.email', 'throwawayemail.com', 'trashmail.de', 'yopmail.net',
+  'yopmail.fr', 'yopmail.org', 'yopmail.info', 'yopmail.biz', 'yopmail.co',
+  'yopmail.net', 'yopmail.org', 'yopmail.info', 'yopmail.biz', 'yopmail.co',
+  'yopmail.net', 'yopmail.org', 'yopmail.info', 'yopmail.biz', 'yopmail.co',
+];
+
+function isValidEmail(email: string): boolean {
+  // Basic email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) return false;
+  // Check for disposable domain
+  const domain = email.split('@')[1]?.toLowerCase();
+  if (domain && disposableDomains.some(d => domain.endsWith(d))) return false;
+  return true;
+}
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -31,16 +60,27 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Email validation
+    if (!isValidEmail(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid, non-temporary email address.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
         },
-        'YOUR_USER_ID'
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
       toast({
@@ -61,9 +101,9 @@ const ContactSection = () => {
   };
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: Github, href: 'https://github.com/KS-Vijay', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/vj-ks/', label: 'LinkedIn' },
+    { icon: Instagram, href: 'https://instagram.com/_._ksvj_._/', label: 'Instagram' },
   ];
 
   const headingVariants = {
@@ -98,7 +138,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-6 py-20">
+    <section id="contact" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20">
       <div className="container mx-auto" ref={ref}>
         <motion.h2
           variants={headingVariants}
@@ -110,7 +150,7 @@ const ContactSection = () => {
           Contact Me
         </motion.h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -100, rotateY: -20 }}

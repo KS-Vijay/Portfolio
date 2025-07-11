@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, ReactNode, useState, useEffect } from 'react';
+import React from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -9,6 +10,8 @@ interface ScrollRevealProps {
   duration?: number;
   direction?: 'up' | 'down' | 'left' | 'right';
   distance?: number;
+  id?: string;
+  className?: string;
 }
 
 const ScrollReveal = ({ 
@@ -16,7 +19,9 @@ const ScrollReveal = ({
   delay = 0, 
   duration = 0.8, 
   direction = 'up',
-  distance = 50
+  distance = 50,
+  id,
+  className = '',
 }: ScrollRevealProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, margin: "-10%" });
@@ -114,9 +119,18 @@ const ScrollReveal = ({
     }
   };
 
+  // Move id from child to wrapper if present
+  let wrapperId = undefined;
+  let childToRender = children;
+  if (React.isValidElement(children) && (children as any).props.id) {
+    wrapperId = (children as any).props.id;
+    childToRender = React.cloneElement(children as React.ReactElement, { id: undefined });
+  }
+
   return (
-    <motion.div
+    <motion.section
       ref={ref}
+      id={id}
       initial={getInitialPosition()}
       animate={getAnimationState()}
       transition={{ 
@@ -124,9 +138,11 @@ const ScrollReveal = ({
         delay: (isInView && !hasBeenInView) ? delay : 0,
         ease: [0.17, 0.55, 0.55, 1]
       }}
+      style={{ position: 'static', overflow: 'visible', transform: 'none', perspective: 1000 }}
+      className={className}
     >
       {children}
-    </motion.div>
+    </motion.section>
   );
 };
 

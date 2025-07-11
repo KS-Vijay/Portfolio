@@ -1,25 +1,24 @@
-
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Github, Linkedin, Instagram } from 'lucide-react';
-
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const handleDownloadResume = () => {
     const link = document.createElement('a');
     link.href = '/resume.pdf';
-    link.download = 'John_Doe_Resume.pdf';
+    link.download = 'Vijay_KS_Resume.pdf';
     link.click();
   };
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: Github, href: 'https://github.com/KS-Vijay', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/vj-ks/', label: 'LinkedIn' },
+    { icon: Instagram, href: 'https://www.instagram.com/_._ksvj_._/', label: 'Instagram' },
   ];
 
   const headingVariants = {
@@ -52,7 +51,7 @@ const AboutSection = () => {
   };
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-6 py-20">
+    <section id="about" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20">
       <div className="container mx-auto" ref={ref}>
         <motion.h2
           variants={headingVariants}
@@ -64,7 +63,7 @@ const AboutSection = () => {
           About Me
         </motion.h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left Image */}
           <motion.div
             initial={{ opacity: 0, x: -100, rotateY: 45 }}
@@ -73,31 +72,13 @@ const AboutSection = () => {
             className="flex justify-center"
           >
             <div className="relative">
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={isInView ? { scale: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="w-80 h-80 rounded-full bg-gradient-to-r from-space-purple via-space-violet to-space-pink p-1 animate-float"
-              >
-                <div className="w-full h-full rounded-full bg-space-dark flex items-center justify-center overflow-hidden">
-                  <motion.img
-                    initial={{ scale: 1.2, opacity: 0 }}
-                    animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                    transition={{ duration: 0.8, delay: 0.8 }}
-                    src="https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=400&fit=crop&crop=face"
-                    alt="Profile"
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-              </motion.div>
-              
-              {/* Orbital elements */}
+              {/* Orbital elements - positioned behind main image */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.5, delay: 1 }}
-                className="absolute inset-0 animate-spin"
-                style={{ animationDuration: '20s' }}
+                className="absolute inset-0 animate-spin z-0"
+                style={{ animationDuration: '20s', pointerEvents: 'none' }}
               >
                 <div className="absolute top-0 left-1/2 w-3 h-3 bg-space-violet rounded-full transform -translate-x-1/2 animate-twinkle"></div>
               </motion.div>
@@ -106,10 +87,68 @@ const AboutSection = () => {
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.5, delay: 1.2 }}
-                className="absolute inset-0 animate-spin"
-                style={{ animationDuration: '30s' }}
+                className="absolute inset-0 animate-spin z-0"
+                style={{ animationDuration: '30s', pointerEvents: 'none' }}
               >
                 <div className="absolute bottom-0 right-0 w-2 h-2 bg-space-pink rounded-full animate-twinkle"></div>
+              </motion.div>
+
+              {/* Main profile image container */}
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={isInView ? { 
+                  scale: 1, 
+                  rotateY: isFlipped ? 180 : 0 
+                } : {}}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="relative w-48 sm:w-64 md:w-80 h-48 sm:h-64 md:h-80 rounded-full bg-gradient-to-r from-space-purple via-space-violet to-space-pink p-1 animate-float z-10"
+                style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+                onMouseEnter={() => setIsFlipped(true)}
+                onMouseLeave={() => setIsFlipped(false)}
+              >
+                <div className="relative w-full h-full rounded-full bg-space-dark overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
+                  {/* Front face */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full overflow-hidden"
+                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    style={{ 
+                      transformStyle: 'preserve-3d',
+                      backfaceVisibility: 'hidden',
+                      zIndex: 2
+                    }}
+                  >
+                    <motion.img
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                      transition={{ duration: 0.8, delay: 0.8 }}
+                      src='/images/p1.webp'
+                      alt="Profile"
+                      className="w-full h-full object-cover rounded-full"
+                      loading="lazy"
+                    />
+                  </motion.div>
+                  
+                  {/* Back face */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full overflow-hidden"
+                    animate={{ rotateY: isFlipped ? 0 : -180 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    style={{ 
+                      transformStyle: 'preserve-3d',
+                      backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)',
+                      zIndex: 1
+                    }}
+                  >
+                    <img
+                      src='/images/p2.webp'
+                      alt="Profile Alternative"
+                      className="w-full h-full object-cover rounded-full"
+                      loading="lazy"
+                    />
+                  </motion.div>
+                </div>
               </motion.div>
             </div>
           </motion.div>
@@ -128,7 +167,7 @@ const AboutSection = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-lg text-gray-300 leading-relaxed mb-6"
               >
-                I'm a passionate Full Stack Developer and AI Engineer with over 5 years of experience in creating innovative solutions that bridge the gap between cutting-edge technology and real-world applications.
+                Hi, I'm Vijay K S — an aspiring Machine Learning Engineer with a strong interest in space, technology, and building things that make an impact.
               </motion.p>
               
               <motion.p
@@ -137,7 +176,7 @@ const AboutSection = () => {
                 transition={{ duration: 0.6, delay: 0.6 }}
                 className="text-lg text-gray-300 leading-relaxed mb-6"
               >
-                My journey in the cosmos of code began with a fascination for problem-solving and has evolved into a deep expertise in machine learning, web development, and cloud architecture.
+                I enjoy working on real-world problems using code, especially in the fields of AI and automation. I'm currently pursuing my undergraduate studies and actively building projects, participating in hackathons, and learning everything I can about future tech.
               </motion.p>
               
               <motion.p
@@ -146,7 +185,16 @@ const AboutSection = () => {
                 transition={{ duration: 0.6, delay: 0.8 }}
                 className="text-lg text-gray-300 leading-relaxed mb-8"
               >
-                When I'm not coding, you'll find me exploring the latest in AI research, contributing to open-source projects, or stargazing—both literally and metaphorically.
+                Beyond tech, I'm deeply inspired by space and the unknown — the silence between stars reminds me why curiosity matters. I believe in staying consistent, thinking long-term, and pushing myself to learn and grow every day.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 1.0 }}
+                className="text-lg text-gray-300 leading-relaxed mb-8"
+              >
+                Whether it's developing tools that solve real problems or just exploring big ideas, I'm here to build — and to keep getting better.
               </motion.p>
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">

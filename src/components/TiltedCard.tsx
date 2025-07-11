@@ -23,6 +23,7 @@ interface TiltedCardProps {
   overlayContent?: React.ReactNode;
   displayOverlayContent?: boolean;
   children?: React.ReactNode;
+  loading?: 'eager' | 'lazy'; // Add loading prop
 }
 
 export default function TiltedCard({
@@ -39,7 +40,8 @@ export default function TiltedCard({
   showTooltip = false,
   overlayContent = null,
   displayOverlayContent = false,
-  children
+  children,
+  loading = 'eager', // Default to eager
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);
 
@@ -130,6 +132,7 @@ export default function TiltedCard({
             height: imageHeight,
             transform: 'translateZ(0)',
           }}
+          loading={loading}
         />
 
         {displayOverlayContent && overlayContent && (

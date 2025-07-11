@@ -1,8 +1,9 @@
 
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
+import React from 'react';
 
-const StarField = () => {
+const StarField = React.memo(() => {
   const stars = useMemo(() => {
     return Array.from({ length: 200 }, (_, i) => ({
       id: i,
@@ -103,6 +104,6 @@ const StarField = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-space-purple/20 via-transparent to-space-pink/20 animate-pulse"></div>
     </div>
   );
-};
+});
 
 export default StarField;

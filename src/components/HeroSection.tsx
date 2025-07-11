@@ -9,13 +9,13 @@ const HeroSection = () => {
     // Create a download link for resume
     const link = document.createElement('a');
     link.href = '/resume.pdf'; // Add your resume file to public folder
-    link.download = 'John_Doe_Resume.pdf';
+    link.download = 'Vijay_KS_Resume.pdf';
     link.click();
   };
 
   return (
-    <section id="hero" data-section="hero" className="min-h-screen flex items-center justify-center px-6 relative">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+    <section id="hero" data-section="hero" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20 relative">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center relative z-10">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
@@ -32,7 +32,7 @@ const HeroSection = () => {
             <span className="text-gradient">Hello,</span>
             <br />
             <DecryptedText 
-              text="I'm John Doe"
+              text="I'm Vijay K S"
               speed={80}
               maxIterations={12}
               sequential={true}
@@ -47,7 +47,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 1.6 }}
             className="text-2xl lg:text-3xl text-space-violet font-bold"
           >
-            Full Stack Developer & AI Engineer
+            Aspiring ML Engineer
           </motion.h2>
           
           <motion.p
@@ -56,7 +56,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 1.8 }}
             className="text-lg text-gray-300 max-w-md font-medium italic"
           >
-            "The universe is not only stranger than we imagine, it is stranger than we can imagine."
+            "Between black holes and galaxies lies my curiosity — endlessly falling, never fading."
           </motion.p>
           
           <motion.div
@@ -78,7 +78,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
-          className="h-[450px] lg:h-[600px] relative z-0"
+          className="h-64 sm:h-[450px] lg:h-[600px] relative z-0"
         >
           <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-space-violet">Loading...</div>}>
             <MetaBalls
