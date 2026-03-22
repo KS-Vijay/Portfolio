@@ -9,6 +9,12 @@ const ExperienceSection = () => {
 
   const experiences = [
     {
+      title: 'MERN Stack with GenAI',
+      company: 'The Angaar Batch & W3Grads',
+      period: 'Jun’ 25 - Jul’ 25',
+      description: 'Built and deployed full-stack web applications using the MERN stack. Integrated Generative AI models into workflows, enhancing automation and reducing manual processing effort by ~40%.',
+    },
+    {
       title: 'BTech CSE - 8 CGPA',
       company: 'Lovely Professional University',
       period: '2023 - Present',

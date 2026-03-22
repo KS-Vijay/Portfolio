@@ -1,17 +1,18 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, lazy } from 'react';
 import HeroSection from '../components/HeroSection';
-import AboutSection from '../components/AboutSection';
-import ExperienceSection from '../components/ExperienceSection';
-import SkillsSection from '../components/SkillsSection';
-import ProjectsSection from '../components/ProjectsSection';
-import ContactSection from '../components/ContactSection';
-import StarField from '../components/StarField';
 import Navigation from '../components/Navigation';
 import ScrollReveal from '../components/ScrollReveal';
 import FloatingArrow from '../components/FloatingArrow';
 import { useLocation } from 'react-router-dom';
+
+const AboutSection = lazy(() => import('../components/AboutSection'));
+const ExperienceSection = lazy(() => import('../components/ExperienceSection'));
+const SkillsSection = lazy(() => import('../components/SkillsSection'));
+const ProjectsSection = lazy(() => import('../components/ProjectsSection'));
+const ContactSection = lazy(() => import('../components/ContactSection'));
+const StarField = lazy(() => import('../components/StarField'));
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -128,25 +129,27 @@ const Index = () => {
           >
             <HeroSection />
             
-            <ScrollReveal id="about" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.2}>
-              <AboutSection />
-            </ScrollReveal>
-            
-            <ScrollReveal id="experience" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.3} direction="left">
-              <ExperienceSection />
-            </ScrollReveal>
-            
-            <ScrollReveal id="skills" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.4} direction="right">
-              <SkillsSection />
-            </ScrollReveal>
-            
-            <ScrollReveal id="projects" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.5}>
-              <ProjectsSection />
-            </ScrollReveal>
-            
-            <ScrollReveal id="contact" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.6}>
-              <ContactSection />
-            </ScrollReveal>
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-space-violet">Loading Section...</div>}>
+              <ScrollReveal id="about" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.2}>
+                <AboutSection />
+              </ScrollReveal>
+              
+              <ScrollReveal id="experience" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.3} direction="left">
+                <ExperienceSection />
+              </ScrollReveal>
+              
+              <ScrollReveal id="skills" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.4} direction="right">
+                <SkillsSection />
+              </ScrollReveal>
+              
+              <ScrollReveal id="projects" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.5}>
+                <ProjectsSection />
+              </ScrollReveal>
+              
+              <ScrollReveal id="contact" className="min-h-screen flex items-center justify-center px-6 py-20" delay={0.6}>
+                <ContactSection />
+              </ScrollReveal>
+            </Suspense>
           </motion.div>
         </div>
       </motion.div>

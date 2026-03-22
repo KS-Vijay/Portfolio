@@ -8,24 +8,24 @@ const SkillsSection = () => {
   const isInView = useInView(ref, { once: true });
 
   const skills = [
-    'Python', 'Java', 'JavaScript', 'React', 'Machine Learning',
+    'Python', 'Java', 'JavaScript', 'C++', 'Machine Learning',
     'TensorFlow', 'PyTorch', 'Git'
   ];
 
   const imglinks = [
-    'https://img.icons8.com/?size=100&id=W3gfKnMhfM6h&format=png&color=000000','https://img.icons8.com/?size=100&id=5OD485koNIrb&format=png&color=000000',
-    'https://img.icons8.com/?size=100&id=Nkym0Ujb8VGI&format=png&color=000000','https://img.icons8.com/?size=100&id=wPohyHO_qO1a&format=png&color=000000',
-    'https://img.icons8.com/?size=100&id=114322&format=png&color=000000','https://img.icons8.com/?size=100&id=n3QRpDA7KZ7P&format=png&color=000000',
-    'https://img.icons8.com/?size=100&id=O6SWwpPIM0GB&format=png&color=000000','https://img.icons8.com/?size=100&id=20906&format=png&color=000000'
+    'https://img.icons8.com/?size=100&id=W3gfKnMhfM6h&format=png&color=000000', 'https://img.icons8.com/?size=100&id=5OD485koNIrb&format=png&color=000000',
+    'https://img.icons8.com/?size=100&id=Nkym0Ujb8VGI&format=png&color=000000', 'https://img.icons8.com/?size=100&id=TpULddJc4gTh&format=png&color=000000',
+    'https://img.icons8.com/?size=100&id=114322&format=png&color=000000', 'https://img.icons8.com/?size=100&id=n3QRpDA7KZ7P&format=png&color=000000',
+    'https://img.icons8.com/?size=100&id=O6SWwpPIM0GB&format=png&color=000000', 'https://img.icons8.com/?size=100&id=20906&format=png&color=000000'
   ];
 
   const headingVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 20
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,

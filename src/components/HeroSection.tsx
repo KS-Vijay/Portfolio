@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { Suspense } from 'react';
-import MetaBalls from './MetaBalls';
+import { Suspense, lazy } from 'react';
+const MetaBalls = lazy(() => import('./MetaBalls'));
 import DecryptedText from './DecryptedText';
 import { Button } from '@/components/ui/button';
 
