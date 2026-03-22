@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Suspense } from 'react';
+import { AnimatedSection } from './AnimatedSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -138,17 +139,15 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20">
-      <div className="container mx-auto" ref={ref}>
-        <motion.h2
-          variants={headingVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          exit="exit"
-          className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient perspective-1000"
-        >
-          Contact Me
-        </motion.h2>
+    <section id="contact" data-section="contact" ref={ref} className="min-h-screen py-20 relative z-10 w-full overflow-hidden">
+      <AnimatedSection className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col items-center">
+          <div style={{ color: '#34d399', fontSize: '13px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>— Say Hello</div>
+          <h2 style={{ color: '#e2f5ef', fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 700, lineHeight: 1.15 }}>
+            Contact Me
+          </h2>
+          <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #34d399, #22d3ee)', marginTop: '12px', marginBottom: '40px' }} />
+        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Contact Form */}
@@ -232,20 +231,26 @@ const ContactSection = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-space-purple to-space-violet hover:from-space-violet hover:to-space-pink text-white py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                    className="w-full py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(52,211,153,0.9), rgba(34,211,238,0.9))',
+                      color: '#050d1a',
+                      border: 'none',
+                      boxShadow: '0 4px 14px rgba(52,211,153,0.25)',
+                    }}
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </motion.div>
               </form>
               
-              {/* Social Media Links */}
-              <div className="mt-8 pt-6 border-t border-space-purple/20">
+              {/* Social Media Links (Footer) */}
+              <div className="mt-8 pt-6 border-t border-[rgba(52,211,153,0.15)]">
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.4, delay: 1.6 }}
-                  className="text-gray-300 text-center mb-4"
+                  className="text-[rgba(226,245,239,0.55)] text-center mb-4"
                 >
                   Connect with me
                 </motion.p>
@@ -260,10 +265,10 @@ const ContactSection = () => {
                       animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
                       transition={{ duration: 0.6, delay: 1.8 + index * 0.1 }}
                       whileHover={{ scale: 1.2, rotate: 10 }}
-                      className="p-3 rounded-full bg-space-purple/20 border border-space-purple/30 hover:bg-space-violet hover:border-space-violet transition-all duration-300 group"
+                      className="p-3 rounded-full bg-[rgba(52,211,153,0.06)] border border-[rgba(52,211,153,0.15)] hover:bg-[rgba(52,211,153,0.12)] hover:border-[rgba(52,211,153,0.45)] transition-all duration-300 group"
                       aria-label={social.label}
                     >
-                      <social.icon className="w-5 h-5 text-space-violet group-hover:text-white transition-colors duration-300" />
+                      <social.icon className="w-5 h-5 text-[#34d399] group-hover:text-[#e2f5ef] transition-colors duration-300" />
                     </motion.a>
                   ))}
                 </div>
@@ -291,7 +296,7 @@ const ContactSection = () => {
             </Suspense>
           </motion.div>
         </div>
-      </div>
+      </AnimatedSection>
     </section>
   );
 };

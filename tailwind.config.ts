@@ -19,6 +19,29 @@ export default {
 		},
 		extend: {
 			colors: {
+				bg: {
+					base:     '#050d1a',
+					surface:  '#0a1628',
+					elevated: '#0d1f3c',
+				},
+				accent: {
+					emerald: '#34d399',
+					indigo:  '#6366f1',
+					teal:    '#22d3ee',
+				},
+				aurora: {
+					text:  '#e2f5ef',
+					muted: 'rgba(226,245,239,0.55)',
+					faint: 'rgba(226,245,239,0.30)',
+				},
+				space: {
+					'dark': '#050d1a',
+					'deep': '#0a1628',
+					'purple': '#6366f1',
+					'violet': '#34d399',
+					'pink': '#22d3ee',
+					'blue': '#22d3ee'
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -40,10 +63,6 @@ export default {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
-				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
@@ -61,14 +80,6 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				space: {
-					'dark': '#0a0a0f',
-					'deep': '#1a1a2e',
-					'purple': '#6b46c1',
-					'violet': '#8b5cf6',
-					'pink': '#ec4899',
-					'blue': '#3b82f6'
 				}
 			},
 			borderRadius: {

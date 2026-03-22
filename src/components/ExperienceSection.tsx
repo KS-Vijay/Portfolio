@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { AnimatedSection } from './AnimatedSection';
 
 const ExperienceSection = () => {
   const ref = useRef(null);
@@ -50,17 +51,17 @@ const ExperienceSection = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-20" ref={ref}>
-      <motion.h2
-        variants={headingVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient"
-      >
-        Education
-      </motion.h2>
-      
-      <div className="relative max-w-full md:max-w-6xl mx-auto">
+    <section id="experience" data-section="experience" ref={ref} className="min-h-screen py-20 relative z-10 w-full overflow-hidden">
+      <AnimatedSection className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col items-center">
+          <div style={{ color: '#34d399', fontSize: '13px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>— My Journey</div>
+          <h2 style={{ color: '#e2f5ef', fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 700, lineHeight: 1.15 }}>
+            Education
+          </h2>
+          <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #34d399, #22d3ee)', marginTop: '12px', marginBottom: '40px' }} />
+        </div>
+        
+        <div className="relative max-w-full md:max-w-6xl mx-auto">
         {/* Timeline line */}
         <motion.div
           initial={{ scaleY: 0 }}
@@ -116,7 +117,8 @@ const ExperienceSection = () => {
           </motion.div>
         ))}
       </div>
-    </div>
+    </AnimatedSection>
+    </section>
   );
 };
 

@@ -1,12 +1,7 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useEffect, useState, useMemo } from 'react';
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { AnimatedSection } from './AnimatedSection';
 
 const SkillsSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
   const skills = [
     'Python', 'Java', 'JavaScript', 'C++', 'Machine Learning',
     'TensorFlow', 'PyTorch', 'Git'
@@ -19,54 +14,7 @@ const SkillsSection = () => {
     'https://img.icons8.com/?size=100&id=O6SWwpPIM0GB&format=png&color=000000', 'https://img.icons8.com/?size=100&id=20906&format=png&color=000000'
   ];
 
-  const headingVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 20 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: 0.3,
-        ease: "easeOut",
-      },
-    },
-    hover: {
-      scale: 1.05,
-      transition: { duration: 0.2 },
-    },
-  };
-
-  const iconFloatVariants = {
-    hidden: { y: 0 },
-    visible: {
-      y: ["0px", "-20px", "0px"],
-      transition: {
-        delay: 0.8, // Start after card animates in (0.3 + 0.5)
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
-
-  // Helper to chunk array into rows of N
-  function chunkArray(arr, size) {
+  function chunkArray(arr: any[], size: number) {
     const result = [];
     for (let i = 0; i < arr.length; i += size) {
       result.push(arr.slice(i, i + size));
@@ -74,9 +22,6 @@ const SkillsSection = () => {
     return result;
   }
 
-  // Responsive grid columns
-  // 2 for xs/sm, 3 for sm/md, 4 for md, 6 for lg+
-  // We'll use md:grid-cols-4 lg:grid-cols-6
   const mdCols = 4;
   const lgCols = 6;
   const isWindow = typeof window !== 'undefined';
@@ -97,21 +42,20 @@ const SkillsSection = () => {
   const skillRows = useMemo(() => chunkArray(skills, cols), [skills, cols]);
 
   return (
-    <section id="skills" data-section="skills" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20">
-      <div className="container mx-auto" ref={ref}>
-        <motion.h2
-          variants={headingVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient"
-        >
-          Skills
-        </motion.h2>
+    <section id="skills" data-section="skills" className="min-h-screen py-20 relative z-10 w-full overflow-hidden">
+      <AnimatedSection className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col items-center">
+          <div style={{ color: '#34d399', fontSize: '13px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>— What I know</div>
+          <h2 style={{ color: '#e2f5ef', fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 700, lineHeight: 1.15 }}>
+            Skills
+          </h2>
+          <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #34d399, #22d3ee)', marginTop: '12px', marginBottom: '40px' }} />
+        </div>
+        
         <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 w-full justify-items-center`}>
           {skillRows.map((row, rowIdx) => {
             const isLastRow = rowIdx === skillRows.length - 1;
             const numCards = row.length;
-            // Only center last row if not full and on md+ screens
             let emptyCells = [];
             if (isLastRow && numCards < cols && cols >= 4) {
               const emptyCount = Math.floor((cols - numCards) / 2);
@@ -123,34 +67,50 @@ const SkillsSection = () => {
                   <div key={`empty-${rowIdx}-${i}`} className="hidden md:block" />
                 ))}
                 {row.map((skill, idx) => (
-                  <motion.div
+                  <AnimatedSection
                     key={`skill-${rowIdx}-${idx}-${skill}`}
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    whileHover="hover"
-                    className="glass-effect rounded-xl p-3 sm:p-4 text-center cursor-pointer group flex flex-col items-center justify-center w-28 h-28 sm:w-36 sm:h-36"
+                    delay={(rowIdx * cols + idx) * 0.05}
+                    className="flex flex-col items-center justify-center w-32 h-32 sm:w-36 sm:h-36"
                   >
-                    <motion.div variants={iconFloatVariants} className="flex justify-center w-full">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-gradient-to-r from-space-purple to-space-violet rounded-full flex items-center justify-center overflow-hidden">
-                        <img
-                          src={imglinks[skills.indexOf(skill)]}
-                          alt={skill + ' logo'}
-                          className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                    </motion.div>
-                    <h3 className="text-xs sm:text-sm font-semibold text-white group-hover:text-space-violet transition-colors duration-300 text-center break-words">
-                      {skill}
-                    </h3>
-                  </motion.div>
+                    <div 
+                      className="group flex flex-col items-center justify-center w-full h-full relative overflow-hidden"
+                      style={{
+                        background: 'rgba(52,211,153,0.06)',
+                        border: '1px solid rgba(52,211,153,0.18)',
+                        backdropFilter: 'blur(8px)',
+                        borderRadius: '8px',
+                        padding: '5px 14px',
+                        color: '#e2f5ef',
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(52,211,153,0.45)';
+                        e.currentTarget.style.background = 'rgba(52,211,153,0.12)';
+                        e.currentTarget.style.boxShadow = '0 0 12px rgba(52,211,153,0.15)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(52,211,153,0.18)';
+                        e.currentTarget.style.background = 'rgba(52,211,153,0.06)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    >
+                      <img
+                        src={imglinks[skills.indexOf(skill)]}
+                        alt={skill + ' logo'}
+                        className="w-10 h-10 sm:w-12 sm:h-12 object-contain mb-3 drop-shadow-md"
+                        loading="lazy"
+                      />
+                      <span className="text-center break-words">{skill}</span>
+                    </div>
+                  </AnimatedSection>
                 ))}
               </React.Fragment>
             );
           })}
         </div>
-      </div>
+      </AnimatedSection>
     </section>
   );
 };

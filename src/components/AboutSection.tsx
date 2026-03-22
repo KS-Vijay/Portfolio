@@ -3,6 +3,8 @@ import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Github, Linkedin, Instagram } from 'lucide-react';
+import { AnimatedSection } from './AnimatedSection';
+
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -21,47 +23,16 @@ const AboutSection = () => {
     { icon: Instagram, href: 'https://www.instagram.com/_._ksvj_._/', label: 'Instagram' },
   ];
 
-  const headingVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.5, 
-      rotateX: -90,
-      y: 100
-    },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      rotateX: 0,
-      y: 0,
-      transition: {
-        duration: 1.2,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.2
-      }
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      rotateY: 90,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
-    }
-  };
-
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-20">
-      <div className="container mx-auto" ref={ref}>
-        <motion.h2
-          variants={headingVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          exit="exit"
-          className="text-4xl lg:text-6xl font-bold text-center mb-16 text-gradient perspective-1000"
-        >
-          About Me
-        </motion.h2>
+    <section id="about" data-section="about" ref={ref} className="min-h-screen py-20 relative z-10 w-full overflow-hidden">
+      <AnimatedSection className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col items-center">
+          <div style={{ color: '#34d399', fontSize: '13px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>— Who I Am</div>
+          <h2 style={{ color: '#e2f5ef', fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 700, lineHeight: 1.15 }}>
+            About Me
+          </h2>
+          <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #34d399, #22d3ee)', marginTop: '12px', marginBottom: '40px' }} />
+        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left Image */}
@@ -205,7 +176,13 @@ const AboutSection = () => {
                 >
                   <Button
                     onClick={handleDownloadResume}
-                    className="bg-gradient-to-r from-space-purple to-space-violet hover:from-space-violet hover:to-space-pink text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+                    className="px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(52,211,153,0.9), rgba(34,211,238,0.9))',
+                      color: '#050d1a',
+                      border: 'none',
+                      boxShadow: '0 4px 14px rgba(52,211,153,0.25)',
+                    }}
                   >
                     Download Resume
                   </Button>
@@ -232,7 +209,7 @@ const AboutSection = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </AnimatedSection>
     </section>
   );
 };

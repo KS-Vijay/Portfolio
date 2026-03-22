@@ -99,7 +99,7 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
         delay: navAnimation?.delay ?? 0,
       }}
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out p-4 sm:p-6 ${
-        isScrolled ? 'bg-space-dark/70 backdrop-blur-lg' : 'bg-transparent'
+        isScrolled ? 'bg-[#050d1a]/70 backdrop-blur-lg border-b border-[#34d399]/10' : 'bg-transparent'
       }`}
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto">
@@ -121,7 +121,7 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
         {/* Hamburger menu for mobile */}
         <div className="relative sm:hidden z-50">
           <button
-            className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-space-violet relative z-50"
+            className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#34d399] relative z-50"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-label={sidebarOpen ? "Close navigation menu" : "Open navigation menu"}
           >
@@ -133,7 +133,7 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
           </button>
           {/* Dropdown menu for mobile */}
           {sidebarOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-space-dark rounded-lg shadow-lg py-4 z-50 flex flex-col gap-2">
+            <div className="absolute right-0 mt-2 w-48 bg-[#0a1628] border border-[#34d399]/20 rounded-lg shadow-lg py-4 z-50 flex flex-col gap-2">
               {navItems.map((item) => (
                 location.pathname === '/' ? (
                   <button
@@ -142,14 +142,14 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
                       handleNavItemClick(item.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                    className={`w-[90%] mx-auto text-center px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSection === item.id
                         ? item.special
-                          ? 'bg-space-violet text-white border border-space-violet'
-                          : 'bg-space-violet/20 text-space-violet border border-space-violet/30'
+                          ? 'bg-[rgba(52,211,153,0.2)] text-[#34d399] border border-[rgba(52,211,153,0.6)]'
+                          : 'text-[#34d399]'
                         : item.special
-                        ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
-                        : 'text-white hover:text-space-violet hover:bg-white/10'
+                        ? 'bg-[rgba(52,211,153,0.1)] text-[#34d399] border border-[rgba(52,211,153,0.3)] hover:bg-[rgba(52,211,153,0.2)] hover:border-[rgba(52,211,153,0.6)]'
+                        : 'text-[rgba(226,245,239,0.55)] hover:text-[#e2f5ef] hover:bg-white/5'
                     }`}
                   >
                     {item.label}
@@ -160,10 +160,10 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
                     to={{ pathname: '/', hash: '#' + item.id }}
                     replace
                     onClick={() => setSidebarOpen(false)}
-                    className={`w-full text-left px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                    className={`w-[90%] mx-auto text-center px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
                       item.special
-                        ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
-                        : 'text-white hover:text-space-violet hover:bg-white/10'
+                        ? 'bg-[rgba(52,211,153,0.1)] text-[#34d399] border border-[rgba(52,211,153,0.3)] hover:bg-[rgba(52,211,153,0.2)] hover:border-[rgba(52,211,153,0.6)]'
+                        : 'text-[rgba(226,245,239,0.55)] hover:text-[#e2f5ef] hover:bg-white/5'
                     }`}
                   >
                     {item.label}
@@ -191,11 +191,11 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
                       className={`px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
                         activeSection === item.id
                           ? item.special
-                            ? 'bg-space-violet text-white border border-space-violet'
-                            : 'bg-space-violet/20 text-space-violet border border-space-violet/30'
+                            ? 'bg-[rgba(52,211,153,0.2)] text-[#34d399] border border-[rgba(52,211,153,0.6)]'
+                            : 'text-[#34d399]'
                           : item.special
-                          ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
-                          : 'text-white hover:text-space-violet hover:bg-white/10'
+                          ? 'bg-[rgba(52,211,153,0.1)] text-[#34d399] border border-[rgba(52,211,153,0.3)] hover:bg-[rgba(52,211,153,0.2)] hover:border-[rgba(52,211,153,0.6)]'
+                          : 'text-[rgba(226,245,239,0.55)] hover:text-[#e2f5ef] hover:bg-white/5'
                       }`}
                     >
                       {item.label}
@@ -206,8 +206,8 @@ const Navigation = React.memo(({ navAnimation }: NavigationProps) => {
                       replace
                       className={`px-4 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
                         item.special
-                          ? 'border border-space-violet text-space-violet hover:bg-space-violet hover:text-white'
-                          : 'text-white hover:text-space-violet hover:bg-white/10'
+                          ? 'bg-[rgba(52,211,153,0.1)] text-[#34d399] border border-[rgba(52,211,153,0.3)] hover:bg-[rgba(52,211,153,0.2)] hover:border-[rgba(52,211,153,0.6)]'
+                          : 'text-[rgba(226,245,239,0.55)] hover:text-[#e2f5ef] hover:bg-white/5'
                       }`}
                     >
                       {item.label}
